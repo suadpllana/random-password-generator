@@ -1,0 +1,12 @@
+button {
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    background-color: rgb(206, 29, 29);
+    cursor: pointer;
+}
+body{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
