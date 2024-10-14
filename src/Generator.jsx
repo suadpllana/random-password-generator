@@ -4,13 +4,17 @@ import {useState} from "react"
 const Generator = () => {
 
     const [result , setResult] = useState("")
+    const [ lowercase, setLowercase] = useState(false)
+    const [ uppercase, setUppercase] = useState(false)
+    const [ symbols, setSymbols] = useState(false)
+    const [ numbers, setNumbers] = useState(false)
+    const [passwordLength , setPasswordLength] = useState(8)
+    const [isCopied , setIsCopied] = useState(false)
+
 
     function generatePassword(){
-        let lowercase = true;
-        let uppercase = true;
-        let symbols = false;
-        let numbers = true
-        let passwordLength = 10
+  
+       
 
 
         let lowercaseChars = "abcdefghijklmnopqrstuvwxyz"
@@ -26,6 +30,14 @@ const Generator = () => {
         allowedChars += uppercase ? uppercaseChars : "";
         allowedChars += symbols ? symbolsChars : ""
         allowedChars += numbers ? numbersChars : ""
+        if(allowedChars === "") {
+          alert("Please select one of the fields below")
+          return
+        }
+        if(passwordLength < 8 || passwordLength > 20) {
+          alert("Minimum password length is 8 and maximum is 20")
+          return
+        }
 
 
         for(let i = 0; i < passwordLength; i++){
@@ -33,14 +45,33 @@ const Generator = () => {
             password += allowedChars[index]
         }
         setResult(password)
-
+        setIsCopied(false)
+    }
+    function handleChange(e) {
+      setPasswordLength(e.target.value)
+    }
+    function copy(){
+      navigator.clipboard.writeText(result)
+      setIsCopied(true)
     }
 
   return (
     <div>
         <h1>Random Password Generator</h1>
-      <button onClick={generatePassword}>Generate Password</button>
-      <p>Generated Password: {result}</p>
+        <label htmlFor="">Lowercase</label><input onClick={() => setLowercase(prev => !prev)} type="radio" /><br />
+        <label htmlFor="">Uppercase</label><input onClick={() => setUppercase(prev => !prev)} type="radio" /><br />
+        <label htmlFor="">Symbols</label><input onClick={() => setSymbols(prev => !prev)} type="radio" /><br />
+        <label htmlFor="">Numbers</label><input onClick={() => setNumbers(prev => !prev)} type="radio" /><br /><br />
+        <label htmlFor="">Password Length: </label><input onChange={(e) => handleChange(e)} type="number" value={passwordLength} min={10} max={20} /><br /><br />
+      <button onClick={generatePassword}>Generate Password</button><br /><br />
+      <p>Generated Password: {result ? 
+      <>
+      <span>{result}</span>
+      <span onClick={copy} className="copy">📝
+        <span className="tooltip">{isCopied ? "Copied" : "Copy"}</span>
+        </span>  </>
+      
+     : ""}</p>
     </div>
   )
 }
