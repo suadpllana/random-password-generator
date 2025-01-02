@@ -10,6 +10,15 @@ body{
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
 }
+.strong{
+  color: green;
+}
+.medium{
+  color: yellow;
+}
+.weak{
+  color: red;
+}
 .copy {
     cursor: pointer;
     font-size: 20px;

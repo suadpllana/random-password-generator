@@ -10,6 +10,8 @@ const Generator = () => {
     const [ numbers, setNumbers] = useState(false)
     const [passwordLength , setPasswordLength] = useState(8)
     const [isCopied , setIsCopied] = useState(false)
+    const [passwordChecker , setPasswordChecker] = useState("")
+    const [passwordClass , setClass] = useState("")
 
 
     function generatePassword(){
@@ -54,6 +56,27 @@ const Generator = () => {
       navigator.clipboard.writeText(result)
       setIsCopied(true)
     }
+    function handleChange(password){
+      if(password === ""){
+        setPasswordChecker("");
+        return
+      }
+      const weakRegex = /^.{0,7}$|^[a-zA-Z]+$|^\d+$/;
+      const mediumRegex = /^(?=.*[a-zA-Z])(?=.*\d)|(?=.*[a-zA-Z])(?=.*[@$!%*?&#])|(?=.*\d)(?=.*[@$!%*?&#]).{8,}$/;
+      const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,}$/;
+      if(weakRegex.test(password)){
+        setPasswordChecker("Password is weak")
+        setClass("weak")
+      }
+      if(mediumRegex.test(password)){
+        setPasswordChecker("Password is medium")
+        setClass("medium")
+      }
+      if(strongRegex.test(password)){
+        setPasswordChecker("Password is strong")
+        setClass("strong")
+      }
+    }
 
   return (
     <div>
@@ -72,6 +95,10 @@ const Generator = () => {
         </span>  </>
       
      : ""}</p>
+
+     <h2>Password strength checker</h2>
+     <input placeholder="Write password here" type="text" onChange={(e) => handleChange(e.target.value)}/>
+     <p className={passwordClass}>{passwordChecker}</p>
     </div>
   )
 }
