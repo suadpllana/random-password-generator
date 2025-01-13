@@ -56,7 +56,7 @@ const Generator = () => {
       navigator.clipboard.writeText(result)
       setIsCopied(true)
     }
-    function handleChange(password){
+    function handleChangeChecker(password){
       if(password === ""){
         setPasswordChecker("");
         return
@@ -80,24 +80,42 @@ const Generator = () => {
 
   return (
     <div>
-        <h1>Random Password Generator</h1>
-        <label htmlFor="">Lowercase</label><input onClick={() => setLowercase(prev => !prev)} type="radio" /><br />
-        <label htmlFor="">Uppercase</label><input onClick={() => setUppercase(prev => !prev)} type="radio" /><br />
-        <label htmlFor="">Symbols</label><input onClick={() => setSymbols(prev => !prev)} type="radio" /><br />
-        <label htmlFor="">Numbers</label><input onClick={() => setNumbers(prev => !prev)} type="radio" /><br /><br />
-        <label htmlFor="">Password Length: </label><input onChange={(e) => handleChange(e)} type="number" value={passwordLength} min={10} max={20} /><br /><br />
+      <div className="card-container">
+        <div className="card-header">
+        <h2 >Random Password Generator</h2>
+        </div><br />
+        <label className="password-length" htmlFor="">Password Length: <br /></label><input onChange={(e) => handleChange(e)} type="number" defultvalue={passwordLength} min={10} max={20} /><br /><br />
+        <div className="conditions-container">
+          <div>
+          <label htmlFor="">Lowercase</label><input onClick={() => setLowercase(prev => !prev)} type="checkbox" /><br />
+          <label htmlFor="">Uppercase</label><input onClick={() => setUppercase(prev => !prev)} type="checkbox" /><br />
+          </div>
+          <div>
+          <label htmlFor="">Symbols</label><input onClick={() => setSymbols(prev => !prev)} type="checkbox" /><br />
+          <label htmlFor="">Numbers</label><input onClick={() => setNumbers(prev => !prev)} type="checkbox" /><br /><br />
+          </div>
+        </div>
+       
+        
+        
       <button onClick={generatePassword}>Generate Password</button><br /><br />
-      <p>Generated Password: {result ? 
-      <>
-      <span>{result}</span>
-      <span onClick={copy} className="copy">📝
+  
+      </div>
+      {result &&
+      <div className="generated-password">
+        <>
+        <h2>Generated Password: </h2><br />
+      <h3>{result}  <span onClick={copy} className="copy">📝
         <span className="tooltip">{isCopied ? "Copied" : "Copy"}</span>
-        </span>  </>
+        </span></h3>
+    
+        </>
       
-     : ""}</p>
-
+      </div>
+       
+      }
      <h2>Password strength checker</h2>
-     <input placeholder="Write password here" type="text" onChange={(e) => handleChange(e.target.value)}/>
+     <input placeholder="Write password here" type="text" onChange={(e) => handleChangeChecker(e.target.value)}/>
      <p className={passwordClass}>{passwordChecker}</p>
     </div>
   )
