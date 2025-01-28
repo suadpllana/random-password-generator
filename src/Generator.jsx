@@ -8,7 +8,7 @@ const Generator = () => {
     const [ uppercase, setUppercase] = useState(false)
     const [ symbols, setSymbols] = useState(false)
     const [ numbers, setNumbers] = useState(false)
-    const [passwordLength , setPasswordLength] = useState(8)
+    const [passwordLength , setPasswordLength] = useState(0)
     const [isCopied , setIsCopied] = useState(false)
     const [passwordChecker , setPasswordChecker] = useState("")
     const [passwordClass , setClass] = useState("")
@@ -36,7 +36,7 @@ const Generator = () => {
           alert("Please select one of the fields below")
           return
         }
-        if(passwordLength < 8 || passwordLength > 20) {
+        if(passwordLength < 8 || passwordLength > 20 || passwordLength === " ") {
           alert("Minimum password length is 8 and maximum is 20")
           return
         }
@@ -62,8 +62,10 @@ const Generator = () => {
         return
       }
       const weakRegex = /^.{0,7}$|^[a-zA-Z]+$|^\d+$/;
-      const mediumRegex = /^(?=.*[a-zA-Z])(?=.*\d)|(?=.*[a-zA-Z])(?=.*[@$!%*?&#])|(?=.*\d)(?=.*[@$!%*?&#]).{8,}$/;
-      const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,}$/;
+      const mediumRegex = /^(?=.*[a-zA-Z])(?=.*\d|(?=.*[a-zA-Z])(?=.*[@$!%*?&#])|(?=.*\d)(?=.*[@$!%*?&#])){8,}|.{8,}$$/;
+      const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,}|.{12,}$/;
+      
+      
       if(weakRegex.test(password)){
         setPasswordChecker("Password is weak")
         setClass("weak")
